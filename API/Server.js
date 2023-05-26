@@ -8,6 +8,9 @@ import dotenv from "dotenv";
 import socketObj from "./global/socket.js";
 const { initialize, getIo } = socketObj;
 
+//import App Routes
+import chatRoutes from "./Routes/chatRoutes.js";
+
 //initialize App
 dotenv.config();
 const App = express();
@@ -19,6 +22,10 @@ App.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Headers", "*");
   next();
 });
+
+//main App Routes
+
+App.use("/chat", chatRoutes);
 
 //express Error MiddleWare
 App.use((err, req, res, next) => {
