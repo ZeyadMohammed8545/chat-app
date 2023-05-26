@@ -7,6 +7,7 @@ import dotenv from "dotenv";
 //import Local Functions And Objects
 import socketObj from "./global/socket.js";
 const { initialize, getIo } = socketObj;
+
 //initialize App
 dotenv.config();
 const App = express();
