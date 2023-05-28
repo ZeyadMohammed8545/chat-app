@@ -68,6 +68,35 @@
   width: 100%;
 }
 
+.flash-message {
+  width: 100%;
+  border-radius: 10px;
+  margin: 0 auto;
+}
+.flash-content {
+  width: 100%;
+  font-size: 20px;
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flash-message.err {
+  background-color: #ff6363a6;
+}
+
+.flash-message.success {
+  background-color: #12d200;
+}
+
+.flash-content.err {
+  color: red;
+}
+.flash-content.success {
+  color: White;
+}
+
 /* Medi Queries */
 
 @media (max-width: 767px) {
@@ -75,6 +104,6 @@
     width: 95%;
   }
   .form-back {
-    height: 110vh;  
+    height: 110vh;
   }
 }

@@ -10,6 +10,9 @@ const { initialize, getIo } = socketObj;
 
 //import App Routes
 import chatRoutes from "./Routes/chatRoutes.js";
+import authRoutes from "./Routes/authRoutes.js";
+import userRoutes from "./Routes/userRoutes.js";
+import { createError } from "./global/helper.js";
 
 //initialize App
 dotenv.config();
@@ -26,6 +29,13 @@ App.use((req, res, next) => {
 //main App Routes
 
 App.use("/chat", chatRoutes);
+App.use("/auth", authRoutes);
+App.use("/user", userRoutes);
+
+//NOT Found Route
+App.use((req, res, next) => {
+  return next(createError(404, "Page Not Found !."));
+});
 
 //express Error MiddleWare
 App.use((err, req, res, next) => {
