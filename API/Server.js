@@ -28,9 +28,9 @@ App.use((req, res, next) => {
 
 //main App Routes
 
-App.use("/chat", chatRoutes);
 App.use("/auth", authRoutes);
 App.use("/user", userRoutes);
+App.use("/chat", chatRoutes);
 
 //NOT Found Route
 App.use((req, res, next) => {
