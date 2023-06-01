@@ -1,4 +1,10 @@
 import { createError } from "../global/helper.js";
+import {
+  groupRename,
+  chatCreate,
+  removeGroupMember,
+  addMember,
+} from "../Data/chatAccess.js";
 import User from "../models/User.js";
 import Chat from "../models/chat.js";
 
@@ -32,13 +38,12 @@ export const accessChat = async (req, res, next) => {
         .json({ message: "fetched Chat Successfully", targetChat: isChat[0] });
     } else {
       //create The Chat
-      const chatData = {
+
+      const newChat = await chatCreate({
         chatName: "sender",
         isGroupChat: false,
         users: [req.user._id, userId],
-      };
-
-      const newChat = await new Chat(chatData).save();
+      });
       if (!newChat) {
         return next(createError(400, "Failed !!"));
       }
@@ -121,15 +126,30 @@ export const createGroup = async (req, res, next) => {
 export const renameGroup = async (req, res, next) => {
   try {
     const { newName, groupId } = req.body;
-    const groupResponse = await Chat.findOneAndUpdate(
-      { _id: groupId },
-      { chatName: newName },
-      { new: true }
-    );
+    const groupResponse = await groupRename({ groupId, newName });
+    res.status(200).json({ message: "Success", groupResponse });
   } catch (err) {
     next(err);
   }
 };
 
-export const RemoveFromGroup = async (req, res, next) => {};
-export const addToGroup = async (req, res, next) => {};
+export const RemoveFromGroup = async (req, res, next) => {
+  try {
+    const { memberId, groupId } = req.body;
+    const chatResponse = await removeGroupMember({ memberId, groupId });
+    res
+      .status(200)
+      .json({ message: "deleted Successfully", chatResponse: chatResponse });
+  } catch (err) {
+    next(err);
+  }
+};
+export const addToGroup = async (req, res, next) => {
+  try {
+    const { chatId, memberId } = req.body;
+    const chatResponse = await addMember({ chatId, memberId });
+    res.status(200).json({ message: "Success !!", chatResponse: chatResponse });
+  } catch (err) {
+    next(err);
+  }
+};
