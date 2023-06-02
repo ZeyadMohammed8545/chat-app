@@ -9,6 +9,7 @@ export const registerUser = async (req, res, next) => {
   if (!name || !email || !password) {
     return next(createError(400, "Invalid Values !!"));
   }
+  console.log(password);
   const userData = {
     name: name,
     email: email,
@@ -45,13 +46,17 @@ export const registerUser = async (req, res, next) => {
 
 export const loginHandler = async (req, res, next) => {
   const { email, password } = req.body;
+  console.log(email);
+  console.log(password);
 
   try {
     const userExist = await User.findOne({ email: email });
     if (!userExist) {
       return next(createError(400, "User Doesn't Exsit Please Sign Up"));
     }
+    console.log(userExist);
     const correctPass = await encryotor.compare(password, userExist.password);
+    console.log(correctPass);
     if (!correctPass) {
       return next(
         createError(400, "Wrong Password Please Enter Valid Values .")

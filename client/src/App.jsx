@@ -8,8 +8,13 @@ import LoginPage from "./pages/loginPage.jsx";
 //import styling Files
 import "./App.css";
 import "./global/global.css";
+import { useEffect } from "react";
 
 const App = () => {
+  useEffect(() => {
+    console.log("following error");
+  }, []);
+
   return (
     <div className="App">
       <Routes>

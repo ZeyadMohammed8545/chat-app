@@ -1,52 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { mainContext } from "../context/provider/contextProvider";
 import FormBar from "./FormBar";
 import FormHeader from "./FormHeader";
 import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 import Form from "react-bootstrap/Form";
 import FlashMessage from "./flashMessage.jsx";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "../toolkit/slices/userSlice";
 
 const SignUpForm = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [Password, setPassword] = useState("");
-  const [rePassword, setRePass] = useState("");
-  const [image, setImage] = useState(undefined);
+  const global = useContext(mainContext);
 
-  const dispatch = useDispatch();
-  const { isLoading, successMessage, errMessage } = useSelector(
-    (state) => state.user
-  );
-  const Navigate = useNavigate();
+  const {
+    name,
+    email,
+    password,
+    rePass,
+    image,
+    isLoading,
+    errMessage,
+    successMessage,
+    nameHandler,
+    emailHandler,
+    passHandler,
+    rePassHandler,
+    imageHandler,
+    registerUser,
+  } = global;
 
-  const nameHandler = (ev) => {
-    setName(ev.target.value);
-  };
-  const emailHandler = (ev) => {
-    setEmail(ev.target.value);
-  };
-  const passHandler = (ev) => {
-    setPassword(ev.target.value);
-  };
-  const rePassHandler = (ev) => {
-    setRePass(ev.target.value);
-  };
-  const imageHandler = (ev) => {
-    setImage(ev.target.files[0]);
-  };
 
   const formSubmitHandler = (ev) => {
     ev.preventDefault();
-    const userData = {
-      name: name,
-      email: email,
-      Password: Password,
-      userImage: image,
-    };
-    dispatch(registerUser(userData));
+    registerUser();
   };
 
   return (
@@ -101,7 +86,7 @@ const SignUpForm = () => {
             <Form.Control
               type="password"
               placeholder="Enter Your Password"
-              value={Password}
+              value={password}
               onChange={passHandler}
             />
           </Form.Group>
@@ -111,7 +96,7 @@ const SignUpForm = () => {
             <Form.Control
               type="Password"
               placeholder="Re Enter Your Password"
-              value={rePassword}
+              value={rePass}
               onChange={rePassHandler}
             />
           </Form.Group>

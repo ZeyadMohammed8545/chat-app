@@ -1,68 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 import Form from "react-bootstrap/Form";
 import FormBar from "./FormBar";
 import FormHeader from "./FormHeader";
 import FlashMessage from "./flashMessage";
-import { Link, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  setLoading,
-  setErrMessage,
-  setSuccessMessage,
-} from "../toolkit/slices/userSlice";
-import axios from "axios";
+import { mainContext } from "../context/provider/contextProvider";
 
 const LoginForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const dispatch = useDispatch();
-  const Navigate = useNavigate();
-  const { isLoading, errMessage, successMessage } = useSelector(
-    (state) => state.user
-  );
+  const global = useContext(mainContext);
 
-  const emailHandler = (ev) => {
-    setEmail(ev.target.value);
-  };
-  const passHandler = (ev) => {
-    setPassword(ev.target.value);
-  };
+  const {
+    email,
+    password,
+    isLoading,
+    errMessage,
+    emailHandler,
+    passHandler,
+    loginHandler,
+  } = global;
 
   const loginSubmit = async (ev) => {
     ev.preventDefault();
-    const loginData = {
-      email: email,
-      password: password,
-    };
-    console.log(loginData);
-    try {
-      dispatch(setLoading(true));
-      const apiResponse = await axios.post(
-        "http://localhost:4000/auth/login",
-        JSON.stringify(loginData),
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      dispatch(setLoading(false));
-      if (apiResponse.status === 200 || apiResponse.status === 201) {
-        window.localStorage.setItem(
-          "access_token",
-          JSON.stringify(apiResponse.data.token)
-        );
-        dispatch(setSuccessMessage(apiResponse.data.message));
-        Navigate("/");
-      } else {
-        dispatch(setErrMessage(apiResponse.data.message));
-      }
-    } catch (err) {
-      dispatch(setLoading(false));
-      dispatch(setErrMessage(err.response.data.message));
-    }
+    loginHandler();
   };
 
   return (

@@ -1,18 +1,18 @@
-import React, { usEffect, useEffect } from "react";
-import {
-  clearErrMessage,
-  clearSuccessMessage,
-} from "../toolkit/slices/userSlice";
+import React, { usEffect, useEffect, useContext } from "react";
+import { mainContext } from "../context/provider/contextProvider";
 import { useDispatch } from "react-redux";
 const FlashMessage = (props) => {
+  const global = useContext(mainContext);
+  const { setErrMessage, setSuccessMessage } = global;
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     setTimeout(() => {
       if (props.success) {
-        dispatch(clearSuccessMessage());
+        setSuccessMessage("");
       } else {
-        dispatch(clearErrMessage());
+        setErrMessage("");
       }
     }, 4000);
   }, []);
